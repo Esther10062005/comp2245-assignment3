@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     const squares = document.querySelectorAll("#board div");
-    const statusDiv = document.getElementById("status"); 
-    let isXTurn = true; 
-    let gameState = Array(9).fill(null);
+    const statusDiv = document.getElementById("status"); // Get the status div
+    const newGameButton = document.getElementById("new-game"); // Get the New Game button
+    let isXTurn = true; // Keeps track of whose turn it is (X or O)
+    let gameState = Array(9).fill(null); // Initialize array with 9 null values
 
     // Define winning combinations
     const winningCombinations = [
@@ -16,13 +17,14 @@ document.addEventListener("DOMContentLoaded", function () {
         [2, 4, 6], // Diagonal 2
     ];
 
-    
+    // Set up each square
     squares.forEach((square, index) => {
         square.classList.add("square");
 
         // Add click event to each square
         square.addEventListener("click", function () {
-            if (square.textContent === "") { // Only add X or O if square is empty
+            // Only add X or O if square is empty and no player has won yet
+            if (square.textContent === "" && !statusDiv.classList.contains("you-won")) {
                 const playerSymbol = isXTurn ? "X" : "O"; // Determine which player's turn it is
                 square.textContent = playerSymbol; // Update the square's content
                 square.classList.add(playerSymbol); // Add the appropriate class for styling
@@ -48,22 +50,37 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // Check for a winner
     function checkWinner(player) {
-        // Check if the player has won
         for (const combination of winningCombinations) {
             const [a, b, c] = combination;
             if (gameState[a] === player && gameState[b] === player && gameState[c] === player) {
                 // Update the status message
-                statusDiv.textContent = Awesome Work! ${player} wins!;
+                statusDiv.textContent = Awesome Job! ${player} wins!;
                 statusDiv.classList.add("you-won"); // Add the you-won class
                 return; // Exit the function once a winner is found
             }
         }
 
-        // Optionally: Check for a draw (if all squares are filled)
+        // Check for a draw
         if (!gameState.includes(null)) {
             statusDiv.textContent = "It's a Draw!";
             statusDiv.classList.add("you-won");
         }
     }
-})
+
+    // Reset game state and UI
+    function resetGame() {
+        gameState = Array(9).fill(null); // Reset game state
+        squares.forEach(square => {
+            square.textContent = ""; // Clear square content
+            square.classList.remove("X", "O", "hover"); // Remove any classes
+        });
+        statusDiv.textContent = "Player X's Turn"; // Reset status message
+        statusDiv.classList.remove("you-won"); // Remove win class
+        isXTurn = true; // Reset turn to X
+    }
+
+    // Add click event listener to the New Game button
+    newGameButton.addEventListener("click", resetGame); // Handles the new game functionality
+});
