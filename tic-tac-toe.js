@@ -88,7 +88,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
-
 // online resources such as geeks for geeks, chat gpt,  were used to assist me with this code
