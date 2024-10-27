@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const [a, b, c] = combination;
             if (gameState[a] === player && gameState[b] === player && gameState[c] === player) {
                 // Update the status message
-                statusDiv.textContent = Awesome Job! ${player} wins!;
+                statusDiv.textContent = Congratulations! ${player} is the Winner!;
                 statusDiv.classList.add("you-won"); // Add the you-won class
                 return; // Exit the function once a winner is found
             }
